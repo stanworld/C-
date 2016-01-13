@@ -63,5 +63,5 @@ void f(vector<int>& v){
         // find it!
     }
     function<int(double)>fun;
-    
+    std::sort(v.begin(), v.end(), std::greater<int>());
 }
