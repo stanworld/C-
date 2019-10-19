@@ -1,6 +1,9 @@
 #include <stdio.h>
+#include "adevs.h"
+#include "adevs_bag.h"
 
 int main() {
-
-    printf("hello world");
+    int x=1;
+    printf("hello world\n");
+    cout<<x<<endl;
 }
