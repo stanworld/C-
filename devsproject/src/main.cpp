@@ -1,31 +1,15 @@
-#include <iostream>
-#include "Customer.h"
-#include "Clerk.hpp"
-#include "Generator.hpp"
-#include "Observer.hpp"
+#include "cherrybomb.h"
 
-using namespace std;
-
-int main(int argc, char** argv) {
-
-    if(argc !=3) {
-        cout<<"Need input and output files! "<<endl;
-        return 1;
-    }
-
-    adevs::Digraph<Customer*> store;
-    Clerk* clrk = new Clerk();
-    Generator* genr = new Generator(argv[1]);
-    Observer* obsrv = new Observer(argv[2]);
-    store.add(clrk);
-    store.add(genr);
-    store.add(obsrv);
-    store.couple(genr,genr->arrive,clrk,clrk->arrive);
-    store.couple(clrk,clrk->depart,obsrv,obsrv->departed);
-
-    adevs::Simulator<IO_Type> sim(&store);
-    while(sim.nextEventTime() < DBL_MAX) {
-        sim.execNextEvent();
-    }
-    return 0;
+int main() {
+  CherryBomb* bomb = new CherryBomb();
+  ode_solver<string>* ode_solve = new corrected_euler<string>(bomb,1E-4,0.01);
+  
+  event_locator<string>* event_find = new linear_event_locator<string>(bomb, 1E-8);
+  Hybrid<string>* model = new Hybrid<string>(bomb,ode_solve,event_find);
+  Simulator<string>* sim = new Simulator<string>(model);
+  while(bomb->getPhase() == FUSE_LIT)
+    sim->execNextEvent();
+  delete sim;
+  delete bomb;
+  return 0;
 }
