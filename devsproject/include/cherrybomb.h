@@ -1,5 +1,6 @@
 #include "adevs.h"
 #include <iostream>
+#include <cmath>
 using namespace std;
 using namespace adevs;
 
@@ -9,9 +10,9 @@ using namespace adevs;
 
 typedef enum {FUSE_LIT, DOUSE, EXPLODE } Phase;
 
-class CherryBomb: public ode_system<string> {
+class CherryBomb1: public ode_system<string> {
   public:
-    CherryBomb():ode_system<string>(3,1) {
+    CherryBomb1():ode_system<string>(3,1) {
         phase = FUSE_LIT;
     }
 
@@ -28,12 +29,21 @@ class CherryBomb: public ode_system<string> {
     }
 
     void state_event_func(const double* q, double *z) {
-        if (q[V] <0.0) z[0] = q[H];
-        else z[0] = 1.0;
+        if (q[V] <0.0 && fabs(q[H])<0.00001) {
+            z[1] = 0;
+        }
+        else if(fabs(q[H]-1.0)>0.00001 && fabs(q[V])<0.00001) {
+            z[1] = 0;
+        } 
+        else { 
+            z[0] = 1.0;
+        }
     }
 
     double time_event_func(const double* q) {
-        if(q[T] < 2.0) return 2.0 - q[T];
+        if(q[T] < 2.0) {
+            return 2.0 - q[T];
+        }
         else return DBL_MAX;
     }
 
@@ -42,8 +52,12 @@ class CherryBomb: public ode_system<string> {
     }
 
     void internal_event(double *q, const bool* state_event) {
-        if(state_event[0]) q[V]= -q[V];
-        if(state_event[1]) phase = EXPLODE;
+        if(state_event[0]) {
+            q[V]= -q[V];
+        }
+        if(state_event[1]) {
+            phase = EXPLODE;
+        } 
     }
 
     void confluent_event(double*q , const bool* state_event, const Bag<string>& xb) {
