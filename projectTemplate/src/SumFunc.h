@@ -10,9 +10,8 @@
 
 class SumFunc {
 public:
-	SumFunc(int a)=delete;
     SumFunc() = default;
-
+    int sum(int , int);
 };
 
 #endif /* SRC_SUMFUNC_H_ */

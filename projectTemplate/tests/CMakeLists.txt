@@ -5,6 +5,6 @@
 # sudo make
 # sudo cp *.a /usr/lib
 include(GoogleTest)
-add_executable(tests CanTest.cpp)
+add_executable(tests CanTest.cpp AnotherTest.cpp ../src/SumFunc.cpp)
 target_link_libraries(tests GTest::GTest)
 gtest_discover_tests(tests)

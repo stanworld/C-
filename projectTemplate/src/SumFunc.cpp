@@ -8,8 +8,7 @@
 #include "SumFunc.h"
 #include <iostream>
 
-//SumFunc::SumFunc(int a) {
-//	std::cout<<a<<std::endl;
-
-//}
+int SumFunc::sum(int a,int b) {
+    return a+b;
+}
 
